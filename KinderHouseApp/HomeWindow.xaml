@@ -1,0 +1,28 @@
+﻿<Window x:Class="KinderHouseApp.HomeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KinderHouseApp"
+        mc:Ignorable="d"
+        Title="KinderHouse" Height="450" Width="800"
+        WindowState="Maximized">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="White" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <DockPanel  VerticalAlignment="top" Margin="0,100,0,0">
+            <DataGrid x:Name="dtgrdHome" FontFamily="Algerian" VerticalAlignment="Center" HorizontalAlignment="Stretch" ColumnWidth="*" KeyUp="dtgrdHome_KeyUp">
+            </DataGrid>
+        </DockPanel>
+
+        <DockPanel Height="100" Width="800" Margin="0,0,0,250" HorizontalAlignment="Left" VerticalAlignment="top">
+            <Button Content="Şagirdlər" Height="56" Width="80" Click="Button_Click" HorizontalAlignment="Left" Margin="10,0,10,0" />
+            <Button Content="İşçilər" Height="56" Width="80" Click="Button_Click_1" HorizontalAlignment="Left" Margin="10,0,10,0" />
+            <Button Content="Ödənişlər" Height="56" Width="80" HorizontalAlignment="Left"  Margin="10,0,10,0" Click="Button_Click_2"/>
+        </DockPanel>
+    </Grid>
+</Window>

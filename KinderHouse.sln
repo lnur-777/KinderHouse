@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KH.DataAccessLayer", "KH.DataAccessLayer\KH.DataAccessLayer.csproj", "{8370570F-0270-4E86-8C58-1B8106CBE58A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinderHouseApp", "KinderHouseApp\KinderHouseApp.csproj", "{9196DF21-C71A-4913-9F45-06BA6A0F79B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8370570F-0270-4E86-8C58-1B8106CBE58A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8370570F-0270-4E86-8C58-1B8106CBE58A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8370570F-0270-4E86-8C58-1B8106CBE58A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8370570F-0270-4E86-8C58-1B8106CBE58A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9196DF21-C71A-4913-9F45-06BA6A0F79B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9196DF21-C71A-4913-9F45-06BA6A0F79B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9196DF21-C71A-4913-9F45-06BA6A0F79B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9196DF21-C71A-4913-9F45-06BA6A0F79B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98FEC9B5-9409-4D0A-8BDA-BA7EB7D0E4DE}
+	EndGlobalSection
+EndGlobal

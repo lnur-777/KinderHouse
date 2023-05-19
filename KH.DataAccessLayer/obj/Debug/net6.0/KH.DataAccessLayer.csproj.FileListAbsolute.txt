@@ -1,0 +1,14 @@
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\bin\Debug\net6.0\KH.DataAccessLayer.deps.json
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\bin\Debug\net6.0\KH.DataAccessLayer.runtimeconfig.json
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\bin\Debug\net6.0\KH.DataAccessLayer.dll
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\bin\Debug\net6.0\KH.DataAccessLayer.pdb
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\KH.DataAccessLayer.csproj.AssemblyReference.cache
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\KH.DataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\KH.DataAccessLayer.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\KH.DataAccessLayer.AssemblyInfo.cs
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\KH.DataAccessLayer.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\KH.DataAccessLayer.dll
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\refint\KH.DataAccessLayer.dll
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\KH.DataAccessLayer.pdb
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\KH.DataAccessLayer.genruntimeconfig.cache
+C:\Users\User\source\repos\KinderHouse\KH.DataAccessLayer\obj\Debug\net6.0\ref\KH.DataAccessLayer.dll
