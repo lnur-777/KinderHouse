@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.Repositories.Abstract
 {
-    public interface IPupilRepository
+    public interface IPupilRepository:IRepository<Pupil>
     {
-        IQueryable<Pupil> GetPupils();
-        void SaveChanges();
     }
 }

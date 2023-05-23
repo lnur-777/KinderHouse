@@ -45,10 +45,13 @@ namespace KinderHouseApp
                 message = "İstifadəçi adı və ya parol səhvdir!";
                 InvokeMessageBox(message, caption);
             }
-            HomeWindow homeWindow = new();
-            LoginWindow loginWindow = new();
-            homeWindow.Show();
-            loginWindow.Hide();
+            else
+            {
+                HomeWindow homeWindow = new();
+                LoginWindow loginWindow = new();
+                homeWindow.Show();
+                loginWindow.Hide();
+            }
         }
 
         private static void InvokeMessageBox(string message, string caption)

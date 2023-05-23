@@ -39,7 +39,7 @@ namespace KH.DataAccessLayer.Services.Concrete
 
         private static List<object> GetPupils()
         {
-            var pupils = _pupilRepository.GetPupils().Select(x => new PupilVM
+            var pupils = _pupilRepository.GetAll().Select(x => new PupilVM
             {
                 ID = x.Id,
                 Name = x.Name,
@@ -50,17 +50,17 @@ namespace KH.DataAccessLayer.Services.Concrete
                 Orientation = x.Orientation,
                 RegisterDate = x.RegisterDate.Value.ToShortDateString(),
                 ParentMaritalStatus = MaritalStatus.StatusList[(int)x.ParentMaritalStatus],
-                SectorName = _sectorRepository.GetSectors().FirstOrDefault(z => z.Id == x.SectorId).Name
+                SectorName = _sectorRepository.GetAll().FirstOrDefault(z => z.Id == x.SectorId).Name
             });
             return new List<object>(pupils);
         }
 
         private static List<object> GetPurchases()
         {
-            var purchases = _purchaseRepository.GetPurchases().Select(x => new PurchaseVM
+            var purchases = _purchaseRepository.GetAll().Select(x => new PurchaseVM
             {
                 ID = x.Id,
-                PupilName = _pupilRepository.GetPupils().Where(z => z.Id == x.PupilId).Select(y => $"{y.Name} {y.SurName} {y.FatherName}").ToString(),
+                PupilName = _pupilRepository.GetAll().Where(z => z.Id == x.PupilId).Select(y => $"{y.Name} {y.SurName} {y.FatherName}").ToString(),
                 PaidAmount = x.PaidAmount.ToString(),
                 MonthlyAmount = x.Amount.ToString(),
                 Date = x.Date.Value.ToShortDateString(),
@@ -71,15 +71,15 @@ namespace KH.DataAccessLayer.Services.Concrete
 
         private static List<object> GetWorkers()
         {
-            var workers = _workerRepository.GetWorkers().Select(x => new WorkerVM
+            var workers = _workerRepository.GetAll().Select(x => new WorkerVM
             {
                 ID = x.Id,
                 Name = x.Name,
                 SurName = x.SurName,
                 FatherName = x.FatherName,
                 RegisterDate = x.RegisteredDate.Value.ToShortDateString(),
-                Lesson = _lessonRepository.GetLessons().FirstOrDefault(z => z.Id == x.LessonId).Name,
-                Position = _positionRepository.GetPositions().FirstOrDefault(y => y.Id == x.PositionId).Name,
+                Lesson = _lessonRepository.GetAll().FirstOrDefault(z => z.Id == x.LessonId).Name,
+                Position = _positionRepository.GetAll().FirstOrDefault(y => y.Id == x.PositionId).Name,
                 Salary = x.Salary.ToString(),
                 Note = x.Note,
             });
@@ -102,7 +102,7 @@ namespace KH.DataAccessLayer.Services.Concrete
         {
             foreach (var model in viewModels.Cast<PupilVM>())
             {
-                var pupil = _pupilRepository.GetPupils().FirstOrDefault(x => x.Id == model.ID);
+                var pupil = _pupilRepository.GetAll().FirstOrDefault(x => x.Id == model.ID);
                 if (pupil != null)
                 {
                     pupil.Name = model.Name;
@@ -113,7 +113,7 @@ namespace KH.DataAccessLayer.Services.Concrete
                     pupil.Orientation = model.Orientation;
                     pupil.RegisterDate = Convert.ToDateTime(model.RegisterDate);
                     pupil.ParentMaritalStatus = MaritalStatus.StatusList.FirstOrDefault(x => x.Value == model.ParentMaritalStatus).Key;
-                    pupil.SectorId = _sectorRepository.GetSectors().FirstOrDefault(z => z.Name == model.SectorName).Id;
+                    pupil.SectorId = _sectorRepository.GetAll().FirstOrDefault(z => z.Name == model.SectorName).Id;
                     _pupilRepository.SaveChanges();
                 }
             }

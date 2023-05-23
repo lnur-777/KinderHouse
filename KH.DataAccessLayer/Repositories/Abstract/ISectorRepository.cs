@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.Repositories.Abstract
 {
-    public interface ISectorRepository
+    public interface ISectorRepository:IRepository<Sector>
     {
-        IQueryable<Sector> GetSectors();
     }
 }

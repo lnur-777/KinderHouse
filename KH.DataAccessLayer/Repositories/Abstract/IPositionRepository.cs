@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.Repositories.Abstract
 {
-    public interface IPositionRepository
+    public interface IPositionRepository:IRepository<Position>
     {
-        IQueryable<Position> GetPositions();
     }
 }

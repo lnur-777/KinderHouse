@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.Repositories.Abstract
 {
-    public interface IPurchaseRepository
+    public interface IPurchaseRepository:IRepository<Purchase>
     {
-        IQueryable<Purchase> GetPurchases();
     }
 }

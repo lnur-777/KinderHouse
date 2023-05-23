@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.Repositories.Abstract
 {
-    public interface IWorkerRepository
+    public interface IWorkerRepository:IRepository<Worker>
     {
-        IQueryable<Worker> GetWorkers();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using KH.DataAccessLayer.Models;
 using KH.DataAccessLayer.Repositories.Abstract;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +9,37 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.Repositories.Concrete
 {
-    public class PupilRepository : IPupilRepository
+    public class PupilRepository : BaseRepository<Pupil>, IPupilRepository
     {
+
         private static ElnurhContext _context;
-        public PupilRepository(ElnurhContext context)
+        DbSet<Pupil> Table;
+        public PupilRepository(ElnurhContext context) : base(context)
         {
             _context = context;
+            Table = _context.Set<Pupil>();
         }
-        public IQueryable<Pupil> GetPupils() => _context.Pupils.AsQueryable();
 
-        public void SaveChanges()
+        public new void Create(Pupil entity)
         {
-            _context.SaveChanges();
+            Table.Add(entity);
+        }
+
+        public new void Delete(Pupil entity)
+        {
+            Table.Remove(entity);
+        }
+
+        public new Pupil Get(int id)
+        {
+            return Table.FirstOrDefault(x => x.Id == id);
+        }
+
+        public new IQueryable<Pupil> GetAll() => Table.AsQueryable();
+
+        public new void Update(Pupil entity)
+        {
+            Table.Update(entity);
         }
     }
 }
