@@ -12,6 +12,6 @@ namespace KH.DataAccessLayer.Services.Abstract
     public interface IDataService
     {
         List<object> GetData<T>() where T : class;
-        void UpdateData(IEnumerable viewModels, string type);
+        bool UpdateData(IEnumerable viewModels, string type, bool isDelete);
     }
 }

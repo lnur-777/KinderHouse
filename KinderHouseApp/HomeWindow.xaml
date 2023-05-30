@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         xmlns:local="clr-namespace:KinderHouseApp"
         mc:Ignorable="d"
         Title="KinderHouse" Height="450" Width="800"
@@ -16,13 +17,31 @@
         </Grid.Background>
         <DockPanel  VerticalAlignment="top" Margin="0,100,0,0">
             <DataGrid x:Name="dtgrdHome" FontFamily="Algerian" VerticalAlignment="Center" HorizontalAlignment="Stretch" ColumnWidth="*" KeyUp="dtgrdHome_KeyUp">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Width="30" BorderThickness="0" Click="Button_Click_5" Background="White">
+                                    <svgc:SvgViewbox Source="https://www.svgrepo.com/show/502608/delete-2.svg" Width="auto" Height="20"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
+        <DockPanel Height="100" Width="auto" VerticalAlignment="top" Margin="5,0,5,0">
+            <StackPanel Height="100" Width="auto" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="top"  Orientation="Horizontal">
+                <Button Content="Şagirdlər" Height="56" Width="80" Click="Button_Click" HorizontalAlignment="Left" Margin="10,0,10,0" />
+                <Button Content="İşçilər" Height="56" Width="80" Click="Button_Click_1" HorizontalAlignment="Left" Margin="10,0,10,0" />
+                <Button Content="Ödənişlər" Height="56" Width="80" HorizontalAlignment="Left"  Margin="10,0,10,0" Click="Button_Click_2"/>
 
-        <DockPanel Height="100" Width="800" Margin="0,0,0,250" HorizontalAlignment="Left" VerticalAlignment="top">
-            <Button Content="Şagirdlər" Height="56" Width="80" Click="Button_Click" HorizontalAlignment="Left" Margin="10,0,10,0" />
-            <Button Content="İşçilər" Height="56" Width="80" Click="Button_Click_1" HorizontalAlignment="Left" Margin="10,0,10,0" />
-            <Button Content="Ödənişlər" Height="56" Width="80" HorizontalAlignment="Left"  Margin="10,0,10,0" Click="Button_Click_2"/>
+            </StackPanel>
+            <StackPanel  Height="100" Width="auto" Margin="0,5,5,0" HorizontalAlignment="Right" VerticalAlignment="top"  Orientation="Vertical">
+                <Button Content="Yeni sətir əlavə et" Click="Button_Click_3" Width="110" Height="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10,5,10,5" />
+                <Button Content="Yadda saxla" Click="Button_Click_4" Width="110" Height="35" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="10,5,10,5" />
+            </StackPanel>
         </DockPanel>
+        
     </Grid>
 </Window>

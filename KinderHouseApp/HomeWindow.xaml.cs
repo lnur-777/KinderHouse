@@ -1,12 +1,11 @@
-﻿using KH.DataAccessLayer.Models;
-using KH.DataAccessLayer.Services.Abstract;
+﻿using KH.DataAccessLayer.Services.Abstract;
 using KH.DataAccessLayer.Services.Concrete;
 using KH.DataAccessLayer.ViewModels;
 using KinderHouseApp.Tools.Abstract;
 using KinderHouseApp.Tools.Concrete;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -14,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Collections;
 
 namespace KinderHouseApp
 {
@@ -31,7 +31,7 @@ namespace KinderHouseApp
         }
         private void HomeWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            dtgrdHome.ItemsSource = DataService.GetData<PupilVM>(); 
+            dtgrdHome.ItemsSource = DataService.GetData<PupilVM>();
             dtgrdHome.Style = ChangeControlProperties<DataGrid>();
             dtgrdHome.ColumnHeaderStyle = ChangeControlProperties<DataGridColumnHeader>();
             ChangeHeaderText(new PupilHeader());
@@ -82,8 +82,9 @@ namespace KinderHouseApp
         {
             if (e.Key == Key.Enter)
             {
-                var viewModelType = dtgrdHome.Items.CurrentItem.GetType().Name;
-                var changedViewModel = dtgrdHome.Items.SourceCollection;
+                var currentViewModelKVP = GetCurrentViewModelAndType();
+                var viewModelType = currentViewModelKVP.Key;
+                var changedViewModel = ((ItemCollection)currentViewModelKVP.Value).SourceCollection;
                 string caption = "Bildiriş!";
                 string message = "Əminsinizmi?";
                 MessageBoxButton button = MessageBoxButton.YesNoCancel;
@@ -91,9 +92,57 @@ namespace KinderHouseApp
                 var result = MessageBox.Show(message, caption, button, icon, MessageBoxResult.Yes);
                 if (result == MessageBoxResult.Yes)
                 {
-                    DataService.UpdateData(changedViewModel,viewModelType);
+                    DataService.UpdateData(changedViewModel, viewModelType, false);
                 }
             }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var currentViewModelKVP = GetCurrentViewModelAndType();
+            object viewModel = GetInstance(currentViewModelKVP.Key);
+            var dataFromCurrentDataGrid = GetDataFromCurrentDataGrid().Cast<object>().ToList(); ;
+            dataFromCurrentDataGrid.Add(viewModel);
+            dtgrdHome.ItemsSource = dataFromCurrentDataGrid;
+        }
+
+        private KeyValuePair<string, object> GetCurrentViewModelAndType()
+        {
+            var viewModelType = dtgrdHome.Items.CurrentItem.GetType().Name;
+            var viewModel = dtgrdHome.Items;
+            return new KeyValuePair<string, object>(viewModelType, viewModel);
+        }
+        private object GetInstance(string viewModelName)
+        {
+            var projectName = "KH.DataAccessLayer";
+            var viewModelNamespace = $"{projectName}.ViewModels";
+            var assembly = Assembly.Load(projectName);
+            Type type = assembly.GetType($"{viewModelNamespace}.{viewModelName}");
+            return Activator.CreateInstance(type);
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            var currentDataGrid = GetDataFromCurrentDataGrid();
+            DataService.UpdateData(currentDataGrid, nameof(PupilVM), false);
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            List<object> list = new List<object>() { dtgrdHome.SelectedItem };
+            IEnumerable ienumerableList = list;
+            var selectedItem = ienumerableList;
+            var currentViewModelKVP = GetCurrentViewModelAndType();
+            DataService.UpdateData(selectedItem, currentViewModelKVP.Key, true);
+        }
+        private IEnumerable GetDataFromCurrentDataGrid()
+        {
+            return dtgrdHome.ItemsSource;
+        }
+
+        private void Button_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

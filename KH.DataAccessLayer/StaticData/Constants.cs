@@ -9,6 +9,7 @@ namespace KH.DataAccessLayer.StaticData
     public static class Constants
     {
         public readonly static string[] PupilGridHeaderTexts = {
+            "Sil",
             "ID", 
             "Adı", 
             "Soyadı", 
@@ -22,6 +23,7 @@ namespace KH.DataAccessLayer.StaticData
         };
 
         public readonly static string[] WorkerGridHeaderTexts = {
+            "Sil",
             "ID",
             "Adı",
             "Soyadı",
@@ -34,6 +36,7 @@ namespace KH.DataAccessLayer.StaticData
         };
 
         public readonly static string[] PurchaseGridHeaderTexts = {
+            "Sil",
             "ID",
             "Şagirdin adı",
             "Ödənilmiş məbləğ",

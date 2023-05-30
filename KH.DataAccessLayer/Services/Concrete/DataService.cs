@@ -7,6 +7,7 @@ using KH.DataAccessLayer.StaticData.Dictionaries;
 using KH.DataAccessLayer.ViewModels;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Security.Cryptography.X509Certificates;
 
 namespace KH.DataAccessLayer.Services.Concrete
 {
@@ -21,7 +22,7 @@ namespace KH.DataAccessLayer.Services.Concrete
         private static IPurchaseRepository? _purchaseRepository;
         public DataService()
         {
-            _context = new();
+            _context ??= new();
             _pupilRepository ??= new PupilRepository(_context);
             _sectorRepository ??= new SectorRepository(_context);
             _workerRepository ??= new WorkerRepository(_context);
@@ -86,38 +87,152 @@ namespace KH.DataAccessLayer.Services.Concrete
             return new List<object>(workers);
         }
 
-        public void UpdateData(IEnumerable viewModels, string type)
+        public bool UpdateData(IEnumerable viewModels, string type, bool isDelete)
         {
             switch (type)
             {
                 case var value when value == nameof(PupilVM):
-                    UpdatePupil(viewModels);
-                    break;
+                    return UpdatePupil(viewModels, isDelete);
+                case var value when value == nameof(WorkerVM):
+                    UpdateWorker(viewModels, isDelete);
+                    return false;
+                case var value when value == nameof(PurchaseVM):
+                    UpdatePurchase(viewModels, isDelete);
+                    return false;
                 default:
-                    break;
+                    return false;
             }
         }
 
-        private static void UpdatePupil(IEnumerable viewModels)
+        private static bool UpdatePupil(IEnumerable viewModels, bool isDelete)
         {
-            foreach (var model in viewModels.Cast<PupilVM>())
+            try
             {
-                var pupil = _pupilRepository.GetAll().FirstOrDefault(x => x.Id == model.ID);
-                if (pupil != null)
+                foreach (var viewModel in viewModels.Cast<PupilVM>())
                 {
-                    pupil.Name = model.Name;
-                    pupil.SurName = model.SurName;
-                    pupil.FatherName = model.FatherName;
-                    pupil.MotherName = model.MotherName;
-                    pupil.Birthday = Convert.ToDateTime(model.Birthday);
-                    pupil.Orientation = model.Orientation;
-                    pupil.RegisterDate = Convert.ToDateTime(model.RegisterDate);
-                    pupil.ParentMaritalStatus = MaritalStatus.StatusList.FirstOrDefault(x => x.Value == model.ParentMaritalStatus).Key;
-                    pupil.SectorId = _sectorRepository.GetAll().FirstOrDefault(z => z.Name == model.SectorName).Id;
-                    _pupilRepository.SaveChanges();
+                    Pupil pupil = _pupilRepository.GetAll().FirstOrDefault(x => x.Id == viewModel.ID);
+                    if (pupil != null && !isDelete)
+                    {
+                        ConvertToPupilModel(viewModel, pupil);
+                        _pupilRepository.Update(pupil);
+                    }
+                    else if (pupil == null && !isDelete)
+                    {
+                        pupil = ConvertToPupilModel(viewModel, new Pupil());
+                        _pupilRepository.Create(pupil);
+                    }
+                    else
+                    {
+                        _pupilRepository.Delete(pupil);
+                    }
                 }
+                _pupilRepository.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
+        private static bool UpdateWorker(IEnumerable viewModels, bool isDelete)
+        {
+            try
+            {
+                foreach (var viewModel in viewModels.Cast<WorkerVM>())
+                {
+                    var worker = _workerRepository.GetAll().FirstOrDefault(x => x.Id == viewModel.ID);
+                    if (worker != null && !isDelete)
+                    {
+                        ConvertToWorkerModel(viewModel, worker);
+                        _workerRepository.Update(worker);
+                    }
+                    else if (worker == null && !isDelete)
+                    {
+                        worker = ConvertToWorkerModel(viewModel, new Worker());
+                        _workerRepository.Update(worker);
+                    }
+                    else
+                    {
+                        _workerRepository.Delete(worker);
+                    }
+                    
+                }
+                _workerRepository.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        private static bool UpdatePurchase(IEnumerable viewModels, bool isDelete)
+        {
+            try
+            {
+                foreach (var viewModel in viewModels.Cast<PurchaseVM>())
+                {
+                    var purchase = _purchaseRepository.GetAll().FirstOrDefault(x => x.Id == viewModel.ID);
+                    if (purchase != null && !isDelete)
+                    {
+                        ConvertToPurchaseModel(viewModel, purchase);
+                        _purchaseRepository.Update(purchase);
+
+                    }
+                    else if (purchase == null && !isDelete)
+                    {
+                        purchase = ConvertToPurchaseModel(viewModel, purchase);
+                        _purchaseRepository.Create(purchase);
+                    }
+                    else
+                    {
+                        _purchaseRepository.Delete(purchase);
+                    }
+                }
+                _purchaseRepository.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        private static Pupil ConvertToPupilModel(PupilVM pupilVM, Pupil pupil)
+        {
+            pupil.Id = pupilVM.ID;
+            pupil.Name = pupilVM.Name;
+            pupil.SurName = pupilVM.SurName;
+            pupil.FatherName = pupilVM.FatherName;
+            pupil.MotherName = pupilVM.MotherName;
+            pupil.Birthday = Convert.ToDateTime(pupilVM.Birthday);
+            pupil.Orientation = pupilVM.Orientation;
+            pupil.RegisterDate = Convert.ToDateTime(pupilVM.RegisterDate);
+            pupil.ParentMaritalStatus = MaritalStatus.StatusList.FirstOrDefault(x => x.Value == pupilVM.ParentMaritalStatus).Key;
+            pupil.SectorId = _sectorRepository.GetAll().FirstOrDefault(z => z.Name == pupilVM.SectorName).Id;
+            return pupil;
+        }
+        private static Worker ConvertToWorkerModel(WorkerVM workerVM, Worker worker)
+        {
+            worker.Id = workerVM.ID;
+            worker.Name = workerVM.Name;
+            worker.SurName = workerVM.SurName;
+            worker.FatherName = workerVM.FatherName;
+            worker.Note = workerVM.Note;
+            worker.RegisteredDate = Convert.ToDateTime(workerVM.RegisterDate);
+            worker.Lesson = _lessonRepository.GetAll().FirstOrDefault(x => x.Name.Equals(workerVM.Lesson));
+            worker.Position = _positionRepository.GetAll().FirstOrDefault(x => x.Name.Equals(workerVM.Position));
+            worker.Salary = decimal.Parse(workerVM.Salary);
+            return worker;
+        }
+        private static Purchase ConvertToPurchaseModel(PurchaseVM purchaseVM, Purchase purchase)
+        {
+            purchase.Pupil = _pupilRepository.GetAll().FirstOrDefault(x => ($"{x.Name} {x.SurName} {x.FatherName}").Equals(purchaseVM.PupilName));
+            purchase.Note = purchaseVM.Note;
+            purchase.PaidAmount = decimal.Parse(purchaseVM.PaidAmount);
+            purchase.Amount = decimal.Parse(purchaseVM.MonthlyAmount);
+            return purchase;
+        }
     }
 }
