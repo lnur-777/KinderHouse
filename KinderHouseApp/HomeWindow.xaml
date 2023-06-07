@@ -16,7 +16,7 @@
             </LinearGradientBrush>
         </Grid.Background>
         <DockPanel  VerticalAlignment="top" Margin="0,100,0,0">
-            <DataGrid x:Name="dtgrdHome" FontFamily="Algerian" VerticalAlignment="Center" HorizontalAlignment="Stretch" ColumnWidth="*" KeyUp="dtgrdHome_KeyUp">
+            <DataGrid x:Name="dtgrdHome" FontFamily="Algerian" VerticalAlignment="Center" HorizontalAlignment="Stretch" ColumnWidth="*" KeyUp="dtgrdHome_KeyUp" PreviewKeyDown="dtgrdHome_PreviewKeyDown">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>

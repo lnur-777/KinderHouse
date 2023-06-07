@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.Repositories.Concrete
 {
-    public class BaseRepository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IGenericRepository<T> where T : class
     {
         DbSet<T> Table;
         ElnurhContext _context;

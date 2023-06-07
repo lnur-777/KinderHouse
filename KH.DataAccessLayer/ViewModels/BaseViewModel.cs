@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KH.DataAccessLayer.Repositories.Abstract
+namespace KH.DataAccessLayer.ViewModels
 {
-    public interface IRepository
+    public abstract class BaseViewModel
     {
+        public int ID { get; set; }
     }
 }

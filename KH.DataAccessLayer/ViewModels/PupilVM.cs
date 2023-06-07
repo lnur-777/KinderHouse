@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.ViewModels
 {
-    public class PupilVM
+    public class PupilVM : BaseViewModel
     {
-        public int ID { get; set; }
         public string? Name { get; set; }
         public string? SurName { get; set; }
         public string? MotherName { get; set; }

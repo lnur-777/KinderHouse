@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KH.DataAccessLayer.Repositories.Abstract
 {
-    public interface ISectorRepository:IRepository<Sector>
+    public interface ISectorRepository : IGenericRepository<Sector>, IRepository
     {
     }
 }

@@ -14,6 +14,9 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Collections;
+using KH.DataAccessLayer.Models;
+using KH.DataAccessLayer.Repositories.Concrete;
+using KH.DataAccessLayer.Repositories.Abstract;
 
 namespace KinderHouseApp
 {
@@ -22,36 +25,55 @@ namespace KinderHouseApp
     /// </summary>
     public partial class HomeWindow : Window
     {
-        private IDataService DataService { get; set; }
+        private ElnurhContext _context;
+        private IPupilRepository _pupilRepository;
+        private ISectorRepository _sectorRepository;
+        private IPurchaseRepository _purchaseRepository;
+        private IWorkerRepository _workerRepository;
+        private ILessonRepository _lessonRepository;
+        private IPositionRepository _positionRepository;
+        private IService _service;
+        private static BaseViewModel selectedModel;
         public HomeWindow()
         {
-            DataService = new DataService();
+            _context ??= new();
+            _pupilRepository ??= new PupilRepository(_context);
+            _sectorRepository ??= new SectorRepository(_context);
+            _purchaseRepository ??= new PurchaseRepository(_context);
+            _workerRepository ??= new WorkerRepository(_context);
+            _lessonRepository ??= new LessonRepository(_context);
+            _positionRepository ??= new PositionRepository(_context);
+            CreateDynamicService(null, _pupilRepository, _sectorRepository);
             Loaded += HomeWindow_Loaded;
             InitializeComponent();
         }
         private void HomeWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            dtgrdHome.ItemsSource = DataService.GetData<PupilVM>();
+            dtgrdHome.ItemsSource = _service.GetAll();
             dtgrdHome.Style = ChangeControlProperties<DataGrid>();
             dtgrdHome.ColumnHeaderStyle = ChangeControlProperties<DataGridColumnHeader>();
             ChangeHeaderText(new PupilHeader());
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            dtgrdHome.ItemsSource = DataService.GetData<PupilVM>();
+            CreateDynamicService(null, _pupilRepository, _sectorRepository);
+            dtgrdHome.ItemsSource = _service.GetAll();
             ChangeHeaderText(new PupilHeader());
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            dtgrdHome.ItemsSource = DataService.GetData<WorkerVM>();
+            CreateDynamicService("WorkerService", _workerRepository, _lessonRepository, _positionRepository);
+            dtgrdHome.ItemsSource = _service.GetAll();
             ChangeHeaderText(new WorkerHeader());
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            dtgrdHome.ItemsSource = DataService.GetData<PurchaseVM>();
+            CreateDynamicService("PurchaseService", _purchaseRepository, _pupilRepository);
+            dtgrdHome.ItemsSource = _service.GetAll();
             ChangeHeaderText(new PurchaseHeader());
         }
         private void ChangeHeaderText(Header header)
@@ -82,9 +104,6 @@ namespace KinderHouseApp
         {
             if (e.Key == Key.Enter)
             {
-                var currentViewModelKVP = GetCurrentViewModelAndType();
-                var viewModelType = currentViewModelKVP.Key;
-                var changedViewModel = ((ItemCollection)currentViewModelKVP.Value).SourceCollection;
                 string caption = "Bildiriş!";
                 string message = "Əminsinizmi?";
                 MessageBoxButton button = MessageBoxButton.YesNoCancel;
@@ -92,7 +111,16 @@ namespace KinderHouseApp
                 var result = MessageBox.Show(message, caption, button, icon, MessageBoxResult.Yes);
                 if (result == MessageBoxResult.Yes)
                 {
-                    DataService.UpdateData(changedViewModel, viewModelType, false);
+                    var isUpdated =_service.Update(selectedModel);
+                    if (isUpdated)
+                    {
+                        MessageBox.Show("Uğurla silindi.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Səhv baş verdi.");
+                    }
+                    dtgrdHome.ItemsSource = _service.GetAll();
                 }
             }
         }
@@ -124,16 +152,30 @@ namespace KinderHouseApp
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             var currentDataGrid = GetDataFromCurrentDataGrid();
-            DataService.UpdateData(currentDataGrid, nameof(PupilVM), false);
+            var isUpdated = _service.UpdateAll(currentDataGrid);
+            if (isUpdated)
+            {
+                MessageBox.Show("Uğurla silindi.");
+            }
+            else
+            {
+                MessageBox.Show("Səhv baş verdi.");
+            }
+            dtgrdHome.ItemsSource = _service.GetAll();
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            List<object> list = new List<object>() { dtgrdHome.SelectedItem };
-            IEnumerable ienumerableList = list;
-            var selectedItem = ienumerableList;
-            var currentViewModelKVP = GetCurrentViewModelAndType();
-            DataService.UpdateData(selectedItem, currentViewModelKVP.Key, true);
+            var isUpdated = _service.Delete(selectedModel);
+            if (isUpdated)
+            {
+                MessageBox.Show("Uğurla silindi.");
+            }
+            else
+            {
+                MessageBox.Show("Səhv baş verdi.");
+            }
+            dtgrdHome.ItemsSource = _service.GetAll();
         }
         private IEnumerable GetDataFromCurrentDataGrid()
         {
@@ -143,6 +185,21 @@ namespace KinderHouseApp
         private void Button_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void CreateDynamicService(string? serviceName = null, params IRepository[] repositories)
+        {
+            serviceName = serviceName ?? "PupilService";
+            var projectName = "KH.DataAccessLayer";
+            var serviceNamespace = $"{projectName}.Services.Concrete";
+            var assembly = Assembly.Load(projectName);
+            Type type = assembly.GetType($"{serviceNamespace}.{serviceName}");
+            _service = Activator.CreateInstance(type, repositories) as IService;
+        }
+
+        private void dtgrdHome_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            selectedModel = dtgrdHome.SelectedItem as BaseViewModel;
         }
     }
 }
