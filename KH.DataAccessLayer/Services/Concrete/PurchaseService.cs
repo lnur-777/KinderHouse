@@ -110,11 +110,6 @@ namespace KH.DataAccessLayer.Services.Concrete
             return purchase;
         }
 
-        List<object> IService.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         private void Save()
         {
             _purchaseRepository.SaveChanges();

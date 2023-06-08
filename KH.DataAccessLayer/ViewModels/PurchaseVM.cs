@@ -8,6 +8,7 @@ namespace KH.DataAccessLayer.ViewModels
 {
     public class PurchaseVM : BaseViewModel
     {
+        public new int ID { get; set; }
         public string? PupilName { get; set; }
         public string? PaidAmount { get; set; }
         public string? MonthlyAmount { get; set; }

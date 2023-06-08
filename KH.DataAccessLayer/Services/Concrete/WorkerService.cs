@@ -122,11 +122,6 @@ namespace KH.DataAccessLayer.Services.Concrete
             return worker;
         }
 
-        List<object> IService.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         private void Save()
         {
             _workerRepository.SaveChanges();

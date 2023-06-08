@@ -8,6 +8,7 @@ namespace KH.DataAccessLayer.ViewModels
 {
     public class WorkerVM : BaseViewModel
     {
+        public new int ID { get; set; }
         public string? Name { get; set; }
         public string? SurName { get; set; }
         public string? FatherName { get; set; }
